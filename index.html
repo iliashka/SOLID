@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css">
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+		</style>
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<div class="wrapper">
+						<img src="images/1.png" style="margin: 10% auto 0; position: relative">
+						<div style="display: flex; flex-direction: row; justify-content: space-around">
+							<div class="fragment" style="display: flex">
+								<div class="block" style="background-color: #f27071;">
+									<p class="small-text">Single responsibility</p>
+								</div>
+								<div class="triangle" style="border-color: transparent transparent transparent #f27070;"></div>
+							</div>
+							<div class="fragment" style="display: flex">
+								<div class="block" style="background-color: #fec854">
+									<p class="small-text">Single responsibility</p>
+								</div>
+								<div class="triangle" style="border-color: transparent transparent transparent #fec854;"></div>
+							</div>
+							<div class="fragment" style="display: flex">
+								<div class="block" style="background-color: #64a9cb">
+									<p class="small-text">Single responsibility</p>
+								</div>
+								<div class="triangle" style="border-color: transparent transparent transparent #64a9cb;"></div>
+							</div>
+							<div class="fragment" style="display: flex">
+								<div class="block" style="background-color: #4285a9">
+									<p class="small-text">Single responsibility</p>
+								</div>
+								<div class="triangle" style="border-color: transparent transparent transparent #4285a9;"></div>
+							</div>
+							<div class="fragment" style="display: flex">
+								<div class="block" style="background-color: #205e88">
+									<p class="small-text">Single responsibility</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section>
+					<section>
+						<div class="wrapper">
+							<h4 style="margin-top: 10%">1. Принцип единственной ответственности</h4>
+							<pre class="fragment" style="width: 420px;"><code data-line-numbers="2|3-5|6-8|9-11">
+class Alcoholic {
+	pourDrink() {
+		//Налить выпить.
+	}
+	prepareSnack() {
+		//Приготовить закуску.
+	}
+	drinkUp() {
+		//Выпить.
+	}
+}
+						</code></pre>
+							<p class="fragment">Не правильно!</p>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+							<p>Правильно:</p>
+							<div class="fragment flex-row-between">
+								<pre class="fragment" style="width: 230px; height: 250px; margin: 0"><code data-line-numbers="2|3-5|7-9" style="font-size: 11px">
+class Barmen {
+    constructor() {
+        this.pourDrink()
+    }
+
+    pourDrink = function () {
+        //Налить выпить.
+    }
+}
+								</code></pre>
+								<img class="fragment" src="images/arrow.png" style="height: 20px; width: 20px">
+								<pre class="fragment" style="width: 230px; height: 250px; margin: 0"><code data-line-numbers="2-10" style="font-size: 11px">
+class Chef {
+  constructor() {
+      this.prepareSnack()
+  }
+
+  prepareSnack = function () {
+      //приготовить закуску.
+  }
+}
+								</code></pre>
+								<img class="fragment" src="images/arrow.png" style="height: 20px; width: 20px">
+								<pre class="fragment" style="width: 340px; height: auto; margin: 0"><code data-line-numbers="2|3-7|9-14" style="font-size: 11px; overflow-y: hidden">
+class Alcoholic {
+  constructor() {
+    this.niceEvening = [];
+    this.drink = new Barmen().pourDrink();
+    this.snack = new Chef().prepareSnack();
+  }
+
+  drinkUp() {
+    this.niceEvening.push(this.drink);
+    setTimeout(() => {
+      this.niceEvening.push(this.snack);
+    }, 2000)
+  }
+}
+								</code></pre>
+							</div>
+							<p class="small-text">Итого: Принцип Единственной ответственности заключается в том, что каждая фунция или модуль
+							отвечает только за-то для чего его сделали
+							</p>
+						</div>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
