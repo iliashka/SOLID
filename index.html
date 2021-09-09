@@ -58,7 +58,7 @@
 				<section>
 					<section>
 						<div class="wrapper">
-							<h4 style="margin-top: 10%">1. Принцип единственной ответственности</h4>
+							<h4 style="margin-top: 10%">1. The Single Responsibility Principle(SRP)</h4>
 							<pre class="fragment" style="width: 420px;"><code data-line-numbers="2|3-5|6-8|9-11">
 class Alcoholic {
 	pourDrink() {
@@ -79,7 +79,7 @@ class Alcoholic {
 						<div class="wrapper">
 							<p>Правильно:</p>
 							<div class="fragment flex-row-between">
-								<pre class="fragment" style="width: 230px; height: 250px; margin: 0"><code data-line-numbers="2|3-5|7-9" style="font-size: 11px">
+								<pre class="fragment" style="width: 230px; height: 250px; margin: 0"><code data-line-numbers="2|3-5|7-9|2-10" style="font-size: 11px">
 class Barmen {
     constructor() {
         this.pourDrink()
@@ -103,7 +103,7 @@ class Chef {
 }
 								</code></pre>
 								<img class="fragment" src="images/arrow.png" style="height: 20px; width: 20px">
-								<pre class="fragment" style="width: 340px; height: auto; margin: 0"><code data-line-numbers="2|3-7|9-14" style="font-size: 11px; overflow-y: hidden">
+								<pre class="fragment" style="width: 340px; height: auto; margin: 0"><code data-line-numbers="2|3-7|9-14|2-15" style="font-size: 11px; overflow-y: hidden">
 class Alcoholic {
   constructor() {
     this.niceEvening = [];
@@ -120,9 +120,260 @@ class Alcoholic {
 }
 								</code></pre>
 							</div>
-							<p class="small-text">Итого: Принцип Единственной ответственности заключается в том, что каждая фунция или модуль
-							отвечает только за-то для чего его сделали
+							<p class="small-text fragment">Итого: Принцип Единственной ответственности заключается в том, что каждая фунция или модуль
+							отвечает только за-то для чего их сделали
 							</p>
+						</div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<div class="wrapper">
+							<h4 style="margin-top: 10%">2. open-closed principal(OCP)</h4>
+							<blockquote class="fragment" style="border-radius: 20px; width: 80%; padding: 2%; background-color:#DEDEDE;">
+								<p class="small-text" style="text-align: left; margin: 0">
+									&nbsp&nbsp&nbsp&nbsp«Программные модули должны быть открыты для расширения, но закрыты для модификации».
+								</p>
+							</blockquote>
+							<p class="small-text fragment">Вот упрощенный пример с компонентами React:</p>
+							<div class="fragment flex-row-between">
+								<pre class="fragment" style="width: 86%"><code data-line-numbers="2-4|6-8"><script type="text/template">
+function Button({ text }: ButtonProps) {
+  return <button>{text}</button>;
+}
+
+function App() {
+  return <Button text="Click me!" />;
+}
+								</script></code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+							<p class="middle-text">Давайте предположим, что нам нужно добавить загрузку к нашей кнопке.</p>
+							<p class="small-text">Изходя из условия мы можем просто сделать так:</p>
+							<pre style="margin: 5% auto"><code data-line-numbers="2|2-5|2-8|10-12|2-12"><script type="text/template">
+function Button({ text, isLoading }: ButtonProps) {
+  if (isLoading) {
+    return <svg>...</svg>;
+  }
+
+  return <button>{text}</button>;
+}
+
+function App() {
+  return <Button text="Click me!" isLoading={true} />;
+}
+							</script></code></pre>
+							<div class="fragment">
+								<p class="small-text">! Но эта реализация не соответствует принципу открытости-закрытости</p>
+								<img src="images/down-arrow.png" style="width: 50px; height: 60px; margin: 0">
+							</div>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+							<p class="middle-text">Чтобы не нарушать данный принцип, вот как нам нужно реализовать данное условие:</p>
+							<pre class="fragment"><code style="font-size: 15px; line-height: normal" data-line-numbers="2-4|6-8|10-16|2-16"><script type="text/template">
+function Loading({ isLoading, children }: LoadingProps) {
+	return isLoading ? <svg>...</svg> : children;
+}
+
+function Button({ text }: ButtonProps) {
+	return <button>{text}</button>;
+}
+
+function App() {
+	return (
+			<Loading isLoading={true}>
+				<Button text="Click me!" />
+			</Loading>
+	);
+}
+							</script></code></pre>
+							<div class="total fragment" style="margin: 5% auto">
+								<p class="small-text"><b>Итого:
+									Принцип открытого-закрытого позволяет упростить расширение,
+									сокращая при этом время, затрачиваемое на адаптацию существующего кода.
+									Разрабатывая свои модули в виде составных частей, вы создаете гибкое и масштабируемое приложение.</b>
+								</p>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<div class="wrapper">
+							<h4 style="margin-top: 5%">3. The Liskov Substitution Principle(LSP)</h4>
+							<blockquote class="fragment" style="border-radius: 20px; width: 80%; padding: 2%; background-color:#DEDEDE;">
+								<p class="small-text" style="text-align: left; margin: 0">
+									&nbsp&nbsp&nbsp&nbsp«Объекты в программе должны быть [заменяемыми]
+									экземплярами своих подтипов без изменения правильности этой программы».
+								</p>
+							</blockquote>
+							<pre style="width: 90%; margin: 5%" class="fragment">
+								<code style="font-size: 15px; line-height: normal" data-line-numbers="1-2|4-6|8-10|12-14|1-15">class Rectangle {
+  constructor(private width: number, private length: number) {}
+
+  public setWidth(width: number) {
+    this.width = width;
+  }
+
+  public setLength(length: number) {
+    this.length = length;
+  }
+
+  public getArea() {
+    return this.width * this.length;
+  }
+}                               </code>
+							</pre>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+							<pre style="width: 92%; margin: 5% auto">
+								<code style="font-size: 15px; line-height: normal" data-line-numbers="1-4|6-10|12-15|1-16">class Square extends Rectangle {
+  constructor(side: number) {
+    super(side, side);
+  }
+
+  public setWidth(width: number) {
+    // A square must maintain equal sides
+    super.setWidth(width);
+    super.setLength(width);
+  }
+
+  public setLength(length: number) {
+    super.setWidth(length);
+    super.setLength(length);
+  }
+}                               </code>
+							</pre>
+							<p class="small-text fragment">Теперь, если клиент должен был использовать Rectangle(или Square):</p>
+							<pre class="fragment" style="width: 92%; margin: 5% auto">
+								<code style="font-size: 15px; line-height: normal" data-line-numbers="1-3">const rect: Rectangle = new Square(10);
+rect.setWidth(20);
+expect(rect.getArea()).toBe(200); // ❌ Если rect это Square, площадь будет 400
+							    </code>
+							</pre>
+							<p style="width: 92%; margin: auto" class="small-text fragment">
+								Принцип подстановки Лискова говорит нам, что Rectangle <b>не является хорошей абстракцией</b> Square .
+							</p>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+							<p class="small-text">
+								Возможным решением было бы вернуться к абстракции с помощью универсального Shape(фигура):
+							</p>
+							<pre class="fragment" style="margin: 5% auto"><code style="font-size: 15px; line-height: normal" data-line-numbers="2-4|6-9|11-13|2-13">
+interface Shape {
+  getArea: () => number;
+}
+
+interface Rectangle extends Shape {
+  width: number;
+  length: number;
+}
+
+interface Square extends Shape {
+  sides: number;
+}
+							</code></pre>
+							<div class="total fragment" style="width: 90%; margin: 0 auto;">
+								<p class="small-text">
+									Итого: LSP идет еще дальше от принципа "Open-Closed", потому что мы не
+									только должны предпочитать расширять модули, а не изменять их, мы должны избегать
+									изменения существующего поведения из указанных расширений; только создавайте поверх него.
+								</p>
+							</div>
+						</div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<div class="wrapper">
+
+						</div>
+					</section>
+				</section>
+				<section>
+					<section>
+						<div class="wrapper">
+							<h4 style="margin-top: 5%">5. The Dependency Inversion Principle(DIP)</h4>
+							<blockquote class="fragment" style="border-radius: 20px; width: 80%; padding: 2%; background-color:#DEDEDE; text-align: center">
+								<p class="small-text" style="text-align: left; margin-bottom: 15px; margin-top: 0">
+									&nbsp&nbsp&nbsp&nbsp«Надо полагаться на абстракции, а не на конкретику».
+								</p>
+							</blockquote>
+							<p class="middle-text">
+								С традиционной зависимостью:
+							</p>
+							<div class="flex-row-between">
+								<pre style="width: 360px;"><code style="font-size: 13px; line-height: normal; letter-spacing: 0.01px">// HttpClient.ts
+import axios from "axios";
+
+export default {
+  createUser: async (user: User) => {
+    return axios.post(/* ... */);
+  },
+  getUserByEmail: async (email: string) => {
+    return axios.get(/* ... */);
+  },
+};							    </code></pre>
+								<pre style="width: 510px"><code style="font-size: 13px; line-height: normal; letter-spacing: 0.01px">// SignupService.ts
+import HttpClient from "HttpClient";
+
+export async function signup(email: string, password: string) {
+  const existingUser = await HttpClient.getUserByEmail(email);
+  if (existingUser) {
+    throw new Error("Email already used");
+  }
+
+  return HttpClient.createUser({ email, password });
+}                                </code></pre>
+							</div>
+						</div>
+					</section>
+					<section>
+						<div>
+							<p class="middle-text" style="margin-bottom: 5%">
+								С инверсией зависимостей:
+							</p>
+							<p class="small-text" style="width: 90%; margin: auto">
+								Сначала, используя <em>interface</em>, давайте определим абстракцию,
+								которая будет действовать как зависимость между доменом и инфраструктурой:
+							</p>
+							<pre style="width: 90%"><code style="font-size: 13px; line-height: normal; letter-spacing: 0.01px">// domain/ApiClient.ts
+export interface ApiClient {
+  createUser: (user: User) => void;
+  getUserByEmail: (email: string) => User;
+  // ...
+}                           </code></pre>
+							<p class="small-text">
+								Затем мы реализуем <b>ApiClient</b> на уровне инфраструктуры:
+							</p>
+							<pre style="width: 90%"><code style="font-size: 13px; line-height: normal; letter-spacing: 0.01px">// infra/HttpClient.ts
+import axios from "axios";
+import ApiClient from "domain/ApiClient";
+
+export function HttpClient(): ApiClient {
+  return {
+    createUser: async (user: User) => {
+      return axios.post(/* ... */);
+    },
+    getUserByEmail: async (email: string) => {
+      return axios.get(/* ... */);
+    },
+  };
+}                           </code></pre>
+						</div>
+					</section>
+					<section>
+						<div class="wrapper">
+
 						</div>
 					</section>
 				</section>

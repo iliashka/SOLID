@@ -672,12 +672,25 @@ $controlsArrowAngleActive: 36deg;
 	margin: auto;
 }
 
+.middle-text {
+	font-size: 30px;
+	margin: auto;
+}
+
 .flex-row-between {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 }
+
+.total {
+	border-radius: 30px;
+	border: #2c2c2c solid 1px;
+	padding: 1%;
+}
+
+
 .reveal .slides>section,
 .reveal .slides>section>section {
 	display: none;
